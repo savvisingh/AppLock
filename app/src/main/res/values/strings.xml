@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AppLocker</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="action_password">Password Change</string>
+    <string name="draw_pattern">Draw Pattern</string>
+    <string name="rate_us">Rate us</string>
+</resources>
