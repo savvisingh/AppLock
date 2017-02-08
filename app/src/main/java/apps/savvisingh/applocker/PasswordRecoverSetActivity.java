@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,9 +21,6 @@ import java.util.List;
 
 import apps.savvisingh.applocker.Utils.AppLockConstants;
 
-/**
- * Created by amitshekhar on 02/05/15.
- */
 public class PasswordRecoverSetActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -84,7 +82,7 @@ public class PasswordRecoverSetActivity extends AppCompatActivity {
                     editor.putInt(AppLockConstants.QUESTION_NUMBER, questionNumber);
                     editor.commit();
 
-                    Intent i = new Intent(PasswordRecoverSetActivity.this, LoadingActivity.class);
+                    Intent i = new Intent(PasswordRecoverSetActivity.this, HomeActivity.class);
                     startActivity(i);
                     finish();
                 } else {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,9 +22,6 @@ import java.util.List;
 
 import apps.savvisingh.applocker.Utils.AppLockConstants;
 
-/**
- * Created by amitshekhar on 02/05/15.
- */
 public class PasswordRecoveryActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -33,6 +31,8 @@ public class PasswordRecoveryActivity extends AppCompatActivity {
     Button confirmButton;
     int questionNumber = 0;
 
+    private TextInputLayout inputLayoutName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +41,7 @@ public class PasswordRecoveryActivity extends AppCompatActivity {
         //Google Analytics
 
 
+        inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         confirmButton = (Button) findViewById(R.id.confirmButton);
         questionsSpinner = (Spinner) findViewById(R.id.questionsSpinner);
         answer = (EditText) findViewById(R.id.answer);

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by amitshekhar on 28/04/15.
- */
 public class AppInfo {
     private String name;
     private String packageName;

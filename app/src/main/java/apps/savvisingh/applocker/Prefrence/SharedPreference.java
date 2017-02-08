@@ -1,8 +1,5 @@
 package apps.savvisingh.applocker.Prefrence;
 
-/**
- * Created by amitshekhar on 28/04/15.
- */
 
 import android.content.Context;
 import android.content.SharedPreferences;

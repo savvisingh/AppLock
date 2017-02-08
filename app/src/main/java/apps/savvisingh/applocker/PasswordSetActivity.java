@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,9 +18,7 @@ import com.takwolf.android.lock9.Lock9View;
 
 import apps.savvisingh.applocker.Utils.AppLockConstants;
 
-/**
- * Created by amitshekhar on 30/04/15.
- */
+
 public class PasswordSetActivity extends AppCompatActivity {
     Lock9View lock9View;
     Button confirmButton, retryButton;
@@ -33,6 +33,9 @@ public class PasswordSetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = getApplicationContext();
         setContentView(R.layout.activity_password_set);
         lock9View = (Lock9View) findViewById(R.id.lock_9_view);
@@ -55,7 +58,7 @@ public class PasswordSetActivity extends AppCompatActivity {
                 Intent i = new Intent(PasswordSetActivity.this, PasswordRecoverSetActivity.class);
                 startActivity(i);
                 finish();
-                    }
+            }
         });
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +95,5 @@ public class PasswordSetActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

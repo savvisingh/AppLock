@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_all_apps"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="All Applications" />
+        <item
+            android:id="@+id/nav_locked_apps"
+            android:icon="@drawable/ic_screen_lock_portrait_black_24dp"
+            android:title="Locked Applications" />
+        <item
+            android:id="@+id/nav_unlocked_apps"
+            android:icon="@drawable/ic_phone_android_black_24dp"
+            android:title="Unlocked Applications" />
+        <item
+            android:id="@+id/nav_change_pattern"
+            android:icon="@drawable/ic_vpn_key_black_24dp"
+            android:title="Change Pattern" />
+        <item
+            android:id="@+id/nav_allow_access"
+            android:icon="@drawable/ic_compare_arrows_black_24dp"
+            android:title="Allow Access" />
+
+    </group>
+
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Share" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

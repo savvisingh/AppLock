@@ -31,13 +31,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
 
+import apps.savvisingh.applocker.PasswordRecoveryActivity;
 import apps.savvisingh.applocker.Prefrence.SharedPreference;
 import apps.savvisingh.applocker.R;
 
 
-/**
- * Created by amitshekhar on 28/04/15.
- */
+
 public class AppCheckServices extends Service {
 
     public static final String TAG = "AppCheckServices";
@@ -153,16 +152,15 @@ public class AppCheckServices extends Service {
             }
         });
 
-//        forgetPassword.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(AppCheckServices.this, PasswordRecoveryActivity.class);
-//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(i);
-//                dialog.dismiss();
-//                AppLockLogEvents.logEvents(AppLockConstants.PASSWORD_CHECK_SCREEN, "Forget Password", "forget_password", "");
-//            }
-//        });
+        forgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AppCheckServices.this, PasswordRecoveryActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                dialog.dismiss();
+            }
+        });
 
         dialog = new Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.setCanceledOnTouchOutside(false);

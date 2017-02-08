@@ -1,9 +1,12 @@
 package apps.savvisingh.applocker;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AppOpsManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,7 +15,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,10 +31,6 @@ import apps.savvisingh.applocker.Services.AlarmReceiver;
 import apps.savvisingh.applocker.Services.AppCheckServices;
 import apps.savvisingh.applocker.Utils.AppLockConstants;
 
-
-/**
- * Created by amitshekhar on 30/04/15.
- */
 public class SplashActivity extends AppCompatActivity {
 
 
@@ -37,34 +42,13 @@ public class SplashActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         context = getApplicationContext();
+        setContentView(R.layout.activity_splash);
 
 
         checkPermissions();
-
-        LinearLayout linearLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        linearLayout.setGravity(Gravity.CENTER);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setLayoutParams(layoutParams);
-
-        TextView textView = new TextView(this);
-        textView.setText(getResources().getString(R.string.app_name));
-        textView.setTextSize(32);
-        textView.setGravity(Gravity.CENTER);
-        linearLayout.addView(textView);
-
-        ImageView imageView = new ImageView(this);
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.bg_splash));
-        linearLayout.addView(imageView);
-
-        setContentView(linearLayout);
-
-
-
 
 
     }
@@ -72,23 +56,27 @@ public class SplashActivity extends AppCompatActivity {
 
     public void checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
             if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-            }else {
-                if(!hasUsageStatsPermission()){
-                    startActivityForResult(
-                            new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                            MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-                }else {
+                OverlayPermissionDialogFragment dialogFragment = new OverlayPermissionDialogFragment();
+                dialogFragment.show(getSupportFragmentManager(), "Overlay Permission");
+
+            }else if(!hasUsageStatsPermission()){
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    UsageAcessDialogFragment dialogFragment = new UsageAcessDialogFragment();
+                    ft.add(dialogFragment, null);
+                    ft.commitAllowingStateLoss();
+            } else {
                     startService();
                 }
 
             }
         }
-    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //No call for super().
+    }
 
     public void startService(){
         /****************************** too much important don't miss it *****************************/
@@ -129,18 +117,23 @@ public class SplashActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
         /** check if received result code
          is equal our requested code for draw permission  */
-        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
-            // ** if so check once again if we have permission */
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (Settings.canDrawOverlays(this)) {
-                       checkPermissions();
-                }
-            }
-        }else if(requestCode == MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS){
-            if (hasUsageStatsPermission()){
-                checkPermissions();
-            }
-        }
+        Log.d("SplashActivity", "cp 1");
+        checkPermissions();
+//        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+//            // ** if so check once again if we have permission */
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                Log.d("SplashActivity", "cp 2");
+//                if (Settings.canDrawOverlays(this)) {
+//                    Log.d("SplashActivity", "cp 3");
+//                       checkPermissions();
+//                }
+//            }
+//        }else if(requestCode == MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS){
+//            if (hasUsageStatsPermission()){
+//                Log.d("SplashActivity", "cp 4");
+//                checkPermissions();
+//            }
+//        }
     }
 
     private boolean hasUsageStatsPermission() {
@@ -152,5 +145,49 @@ public class SplashActivity extends AppCompatActivity {
                     android.os.Process.myUid(), getPackageName());
         }
         return mode == AppOpsManager.MODE_ALLOWED;
+    }
+
+
+    public static class OverlayPermissionDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.ovarlay_permission_description)
+                    .setTitle("Overlay Permission")
+                    .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:" + getActivity().getPackageName()));
+                            startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                        }
+                    });
+
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
+    public static class UsageAcessDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.usage_data_access_description)
+                    .setTitle("Usage Access Permission")
+                    .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                            startActivityForResult(
+                                    new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+                                    MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+                        }
+                    });
+
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 }

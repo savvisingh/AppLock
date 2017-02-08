@@ -20,9 +20,6 @@ import apps.savvisingh.applocker.R;
 import apps.savvisingh.applocker.Utils.AppLockConstants;
 
 
-/**
- * Created by amitshekhar on 28/04/15.
- */
 public class ApplicationListAdapter extends RecyclerView.Adapter<ApplicationListAdapter.ViewHolder> {
     List<AppInfo> installedApps = new ArrayList();
     private Context context;
@@ -66,32 +63,7 @@ public class ApplicationListAdapter extends RecyclerView.Adapter<ApplicationList
         this.context = context;
         this.requiredAppsType = requiredAppsType;
         sharedPreference = new SharedPreference();
-        List<AppInfo> lockedFilteredAppList = new ArrayList<AppInfo>();
-        List<AppInfo> unlockedFilteredAppList = new ArrayList<AppInfo>();
-        boolean flag = true;
-        if (requiredAppsType.matches(AppLockConstants.LOCKED) || requiredAppsType.matches(AppLockConstants.UNLOCKED)) {
-            for (int i = 0; i < installedApps.size(); i++) {
-                flag = true;
-                if (sharedPreference.getLocked(context) != null) {
-                    for (int j = 0; j < sharedPreference.getLocked(context).size(); j++) {
-                        if (installedApps.get(i).getPackageName().matches(sharedPreference.getLocked(context).get(j))) {
-                            lockedFilteredAppList.add(installedApps.get(i));
-                            flag = false;
-                        }
-                    }
-                }
-                if (flag) {
-                    unlockedFilteredAppList.add(installedApps.get(i));
-                }
-            }
-            if (requiredAppsType.matches(AppLockConstants.LOCKED)) {
-                installedApps.clear();
-                installedApps.addAll(lockedFilteredAppList);
-            } else if (requiredAppsType.matches(AppLockConstants.UNLOCKED)) {
-                installedApps.clear();
-                installedApps.addAll(unlockedFilteredAppList);
-            }
-        }
+
     }
 
     // Create new views (invoked by the layout manager)

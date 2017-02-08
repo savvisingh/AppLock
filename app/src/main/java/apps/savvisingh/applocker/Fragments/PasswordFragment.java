@@ -15,14 +15,12 @@ import android.widget.Toast;
 
 import com.takwolf.android.lock9.Lock9View;
 
-import apps.savvisingh.applocker.MainActivity;
+import apps.savvisingh.applocker.HomeActivity;
 import apps.savvisingh.applocker.R;
 import apps.savvisingh.applocker.Utils.AppLockConstants;
 
 
-/**
- * Created by amitshekhar on 30/04/15.
- */
+
 public class PasswordFragment extends Fragment {
     Lock9View lock9View;
     Button confirmButton, retryButton;
@@ -71,7 +69,7 @@ public class PasswordFragment extends Fragment {
                 editor.putBoolean(AppLockConstants.IS_PASSWORD_SET, true);
                 editor.commit();
 
-                Intent i = new Intent(getActivity(), MainActivity.class);
+                Intent i = new Intent(getActivity(), HomeActivity.class);
                 getActivity().startActivity(i);
                 getActivity().finish();
 
